@@ -1,0 +1,3 @@
+The Petal Length vs Petal Width plot is better for separating the classes because there is a lot of overlap between versicolor and verginica ranges in the sepal length vs sepal width plot.
+
+You may want to use a log scale when the data has a large range that is not linearly distributed. It is useful to differentiate between values that are relatively close together but small in comparison the larger values.

@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script src="../lib/d3.v3.min.js"></script>
+<style type="text/css">
+	.axis path,
+	.axis line {
+  	fill: none;
+  	stroke: #000;
+  	shape-rendering: crispEdges;
+  }
+
+</style>
+<body>
+
+
+<h1> Sepal Length vs Sepal Width</h1>
+
+<script>
+/*
+-----------------------------------
+PART A
+-----------------------------------
+*/
+	//Width and height
+	var w = 500;
+	var h = 500;
+
+	
+	//Create SVG element
+	var svg = d3.select("body")
+				.append("svg")
+					.attr("width", w+80)
+					.attr("height", h+50)
+				.append("g")
+					.attr("transform", "translate(40,25)");
+
+d3.tsv('iris.tsv', function(error, i) {
+		if (error) throw error;
+		i.forEach(function (j) {
+			j.sepalLength = +j.sepalLength;
+			j.sepalWidth = +j.sepalWidth;
+		})
+	var x = d3.scale.linear()
+		.domain(d3.extent(i, function(d) { return d.sepalLength; }))
+    	.range([0, w]);
+
+	var y = d3.scale.linear()
+		.domain(d3.extent(i, function(d) { return d.sepalWidth; }))
+    	.range([h, 0]);
+	var xAxis = d3.svg.axis().scale(x)
+    	.orient("bottom")
+
+	var yAxis = d3.svg.axis().scale(y)
+    		.orient("left")
+
+
+	svg.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + h + ")")
+		.call(xAxis)
+		.append("text")
+		      .attr("x", w-110)
+		      .attr("y", -5)
+		      .text("Sepal Length (cm)");
+	svg.append("g")
+		.attr("class", "y axis")
+		.call(yAxis)
+		.append("text")
+	      .attr("class", "label")
+	      .attr("transform", "rotate(-90)")
+	      .attr("x", -110)
+	      .attr("y", 15)
+	      .text("Sepal Width (cm)");
+
+
+
+
+setosa = []
+versicolor = []
+verginica = []
+i.forEach(function(d) {
+	if (d.species == "setosa") {
+		setosa.push(d)
+	} else {
+		if (d.species == "versicolor") {
+		versicolor.push(d);
+		} else {
+		verginica.push(d)
+		}
+	}
+})
+
+
+
+
+  svg.selectAll("data")
+      .data(setosa)
+    .enter().append("circle")
+      .attr("r", 4)
+      .attr("cy", function(d) { return y(d.sepalWidth); })
+      .attr("cx", function(d) { return x(d.sepalLength); })
+      .style("fill", "red");
+
+  svg.selectAll("data")
+      .data(versicolor)
+    .enter().append("rect")
+      .attr("height", 6)
+      .attr("width", 6)
+      .attr("y", function(d) { return y(d.sepalWidth); })
+      .attr("x", function(d) { return x(d.sepalLength); })
+      .style("fill", "blue")
+  
+  //triangle
+  svg.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.sepalWidth) -2; })
+      .attr("x1", function(d) { return x(d.sepalLength) - 4; })
+      .attr("y2", function(d) { return y(d.sepalWidth) -2; })
+      .attr("x2", function(d) { return x(d.sepalLength) + 4; })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  svg.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.sepalWidth) - 8; })
+      .attr("x1", function(d) { return x(d.sepalLength); })
+      .attr("y2", function(d) { return y(d.sepalWidth) -2; })
+      .attr("x2", function(d) { return x(d.sepalLength) + 4; })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  svg.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.sepalWidth) -2; })
+      .attr("x1", function(d) { return x(d.sepalLength) - 4; })
+      .attr("y2", function(d) { return y(d.sepalWidth) -8; })
+      .attr("x2", function(d) { return x(d.sepalLength); })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  
+  //key
+  svg.append("text")
+  		.attr("x", 450)
+  		.text("Setosa")
+  svg.append("text")
+  	 	.attr("x", 450)
+  	 	.attr("y", 18)
+  	 	.text("Versicolor")
+  svg.append("text")
+  	 	.attr("x", 450)
+  	 	.attr("y", 36)
+  	 	.text("Verginica")
+  svg.append("circle")
+  		.attr("cx", 440)
+  		.attr("cy", -5)
+  		.attr("r", 4)
+  		.attr("fill", "red")
+  svg.append("rect")
+  		.attr("x", 437)
+  		.attr("y", 10)
+  		.attr("width", 6)
+  		.attr("height", 6)
+  		.attr("fill", "blue")
+  svg.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 436)
+  		.attr("y1", 34)
+  		.attr("x2", 440)
+  		.attr("y2", 27)
+  svg.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 436)
+  		.attr("y1", 34)
+  		.attr("x2", 444)
+  		.attr("y2", 34)
+  svg.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 444)
+  		.attr("y1", 34)
+  		.attr("x2", 440)
+  		.attr("y2", 27)
+  svg.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 420)
+  		.attr("y1", -20)
+  		.attr("x2", 530)
+  		.attr("y2", -20)
+  svg.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 420)
+  		.attr("y1", -20)
+  		.attr("x2", 420)
+  		.attr("y2", 50)
+  svg.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 530)
+  		.attr("y1", 50)
+  		.attr("x2", 420)
+  		.attr("y2", 50)
+  svg.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 530)
+  		.attr("y1", 50)
+  		.attr("x2", 530)
+  		.attr("y2", -20)
+
+	});
+
+</script>
+<h1>Petal Length vs Petal Width</h1>
+<script>
+	//Width and height
+	var w = 500;
+	var h = 500;
+
+	
+	//Create SVG element
+	var svg2 = d3.select("body")
+				.append("svg")
+					.attr("width", w+80)
+					.attr("height", h+50)
+				.append("g")
+					.attr("transform", "translate(40,25)");
+
+d3.tsv('iris.tsv', function(error, i) {
+		if (error) throw error;
+		i.forEach(function (j) {
+			j.sepalLength = +j.petalLength;
+			j.sepalWidth = +j.petalWidth;
+		})
+	var x = d3.scale.linear()
+		.domain(d3.extent(i, function(d) { return d.petalLength; }))
+    	.range([0, w]);
+
+	var y = d3.scale.linear()
+		.domain(d3.extent(i, function(d) { return d.petalWidth; }))
+    	.range([h, 0]);
+	var xAxis = d3.svg.axis().scale(x)
+    	.orient("bottom")
+
+	var yAxis = d3.svg.axis().scale(y)
+    		.orient("left")
+
+
+	svg2.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + h + ")")
+		.call(xAxis)
+		.append("text")
+		      .attr("x", w-110)
+		      .attr("y", -5)
+		      .text("Petal Length (cm)");
+	svg2.append("g")
+		.attr("class", "y axis")
+		.call(yAxis)
+		.append("text")
+	      .attr("class", "label")
+	      .attr("transform", "rotate(-90)")
+	      .attr("x", -110)
+	      .attr("y", 15)
+	      .text("Petal Width (cm)");
+
+
+
+
+setosa = []
+versicolor = []
+verginica = []
+i.forEach(function(d) {
+	if (d.species == "setosa") {
+		setosa.push(d)
+	} else {
+		if (d.species == "versicolor") {
+		versicolor.push(d);
+		} else {
+		verginica.push(d)
+		}
+	}
+})
+
+
+
+
+  svg2.selectAll("data")
+      .data(setosa)
+    .enter().append("circle")
+      .attr("r", 4)
+      .attr("cy", function(d) { return y(d.petalWidth); })
+      .attr("cx", function(d) { return x(d.petalLength); })
+      .style("fill", "red");
+
+  svg2.selectAll("data")
+      .data(versicolor)
+    .enter().append("rect")
+      .attr("height", 6)
+      .attr("width", 6)
+      .attr("y", function(d) { return y(d.petalWidth); })
+      .attr("x", function(d) { return x(d.petalLength); })
+      .style("fill", "blue")
+  
+  //triangle
+  svg2.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.petalWidth) -2; })
+      .attr("x1", function(d) { return x(d.petalLength) - 4; })
+      .attr("y2", function(d) { return y(d.petalWidth) -2; })
+      .attr("x2", function(d) { return x(d.sepalLength) + 4; })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  svg2.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.petalWidth) - 8; })
+      .attr("x1", function(d) { return x(d.petalLength); })
+      .attr("y2", function(d) { return y(d.petalWidth) -2; })
+      .attr("x2", function(d) { return x(d.petalLength) + 4; })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  svg2.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.petalWidth) -2; })
+      .attr("x1", function(d) { return x(d.petalLength) - 4; })
+      .attr("y2", function(d) { return y(d.petalWidth) -8; })
+      .attr("x2", function(d) { return x(d.petalLength); })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  
+  //key
+  svg2.append("text")
+  		.attr("x", 50)
+  		.text("Setosa")
+  svg2.append("text")
+  	 	.attr("x", 50)
+  	 	.attr("y", 18)
+  	 	.text("Versicolor")
+  svg2.append("text")
+  	 	.attr("x", 50)
+  	 	.attr("y", 36)
+  	 	.text("Verginica")
+  svg2.append("circle")
+  		.attr("cx", 40)
+  		.attr("cy", -5)
+  		.attr("r", 4)
+  		.attr("fill", "red")
+  svg2.append("rect")
+  		.attr("x", 37)
+  		.attr("y", 10)
+  		.attr("width", 6)
+  		.attr("height", 6)
+  		.attr("fill", "blue")
+  svg2.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 36)
+  		.attr("y1", 34)
+  		.attr("x2", 40)
+  		.attr("y2", 27)
+  svg2.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 36)
+  		.attr("y1", 34)
+  		.attr("x2", 44)
+  		.attr("y2", 34)
+  svg2.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 44)
+  		.attr("y1", 34)
+  		.attr("x2", 40)
+  		.attr("y2", 27)
+  svg2.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 20)
+  		.attr("y1", -20)
+  		.attr("x2", 130)
+  		.attr("y2", -20)
+  svg2.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 20)
+  		.attr("y1", -20)
+  		.attr("x2", 20)
+  		.attr("y2", 50)
+  svg2.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 130)
+  		.attr("y1", 50)
+  		.attr("x2", 20)
+  		.attr("y2", 50)
+  svg2.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 130)
+  		.attr("y1", 50)
+  		.attr("x2", 130)
+  		.attr("y2", -20)
+
+	});
+
+		</script>
+
+		<h1> Sepal Length vs Sepal Width (Size Adjusted)</h1>
+
+<script>
+
+/*
+-----------------------------------
+PART B
+-----------------------------------
+*/
+	//Width and height
+	var w = 500;
+	var h = 500;
+
+	
+	//Create SVG element
+	var svg3 = d3.select("body")
+				.append("svg")
+					.attr("width", w+80)
+					.attr("height", h+50)
+				.append("g")
+					.attr("transform", "translate(40,25)");
+
+d3.tsv('iris.tsv', function(error, i) {
+		if (error) throw error;
+		i.forEach(function (j) {
+			j.sepalLength = +j.sepalLength;
+			j.sepalWidth = +j.sepalWidth;
+		})
+	var x = d3.scale.linear()
+		.domain(d3.extent(i, function(d) { return d.sepalLength; }))
+    	.range([0, w]);
+
+	var y = d3.scale.linear()
+		.domain(d3.extent(i, function(d) { return d.sepalWidth; }))
+    	.range([h, 0]);
+	var xAxis = d3.svg.axis().scale(x)
+    	.orient("bottom")
+
+	var yAxis = d3.svg.axis().scale(y)
+    		.orient("left")
+
+
+	svg3.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + h + ")")
+		.call(xAxis)
+		.append("text")
+		      .attr("x", w-110)
+		      .attr("y", -5)
+		      .text("Sepal Length (cm)");
+	svg3.append("g")
+		.attr("class", "y axis")
+		.call(yAxis)
+		.append("text")
+	      .attr("class", "label")
+	      .attr("transform", "rotate(-90)")
+	      .attr("x", -110)
+	      .attr("y", 15)
+	      .text("PetalWidth (cm)");
+
+
+
+
+setosa = []
+versicolor = []
+verginica = []
+i.forEach(function(d) {
+	if (d.species == "setosa") {
+		setosa.push(d)
+	} else {
+		if (d.species == "versicolor") {
+		versicolor.push(d);
+		} else {
+		verginica.push(d)
+		}
+	}
+})
+
+
+
+
+  svg3.selectAll("data")
+      .data(setosa)
+    .enter().append("circle")
+      .attr("r", function(d) { return (.25*(d.sepalLength*d.sepalLength))})
+      .attr("cy", function(d) { return y(d.sepalWidth); })
+      .attr("cx", function(d) { return x(d.sepalLength); })
+      .style("fill", "red");
+
+  svg3.selectAll("data")
+      .data(versicolor)
+    .enter().append("rect")
+      .attr("height", function(d) { return (.3*(d.sepalLength*d.sepalLength))})
+      .attr("width", function(d) { return (.3*(d.sepalLength*d.sepalLength))})
+      .attr("y", function(d) { return y(d.sepalWidth); })
+      .attr("x", function(d) { return x(d.sepalLength); })
+      .style("fill", "blue")
+  
+  //triangle
+  svg3.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.sepalWidth) -.1*d.sepalLength*d.sepalLength; })
+      .attr("x1", function(d) { return x(d.sepalLength) - .2*d.sepalLength*d.sepalLength; })
+      .attr("y2", function(d) { return y(d.sepalWidth) -.1*d.sepalLength*d.sepalLength; })
+      .attr("x2", function(d) { return x(d.sepalLength) + .2*d.sepalLength*d.sepalLength; })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  svg3.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.sepalWidth) - .4*d.sepalLength*d.sepalLength; })
+      .attr("x1", function(d) { return x(d.sepalLength); })
+      .attr("y2", function(d) { return y(d.sepalWidth) -.1*d.sepalLength*d.sepalLength; })
+      .attr("x2", function(d) { return x(d.sepalLength) + .2*d.sepalLength*d.sepalLength; })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  svg3.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.sepalWidth) -.1*d.sepalLength*d.sepalLength; })
+      .attr("x1", function(d) { return x(d.sepalLength) - .2*d.sepalLength*d.sepalLength; })
+      .attr("y2", function(d) { return y(d.sepalWidth) -.4*d.sepalLength*d.sepalLength; })
+      .attr("x2", function(d) { return x(d.sepalLength); })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  
+  //key
+  svg3.append("text")
+  		.attr("x", 450)
+  		.text("Setosa")
+  svg3.append("text")
+  	 	.attr("x", 450)
+  	 	.attr("y", 18)
+  	 	.text("Versicolor")
+  svg3.append("text")
+  	 	.attr("x", 450)
+  	 	.attr("y", 36)
+  	 	.text("Verginica")
+  svg3.append("circle")
+  		.attr("cx", 440)
+  		.attr("cy", -5)
+  		.attr("r", 4)
+  		.attr("fill", "red")
+  svg3.append("rect")
+  		.attr("x", 437)
+  		.attr("y", 10)
+  		.attr("width", 6)
+  		.attr("height", 6)
+  		.attr("fill", "blue")
+  svg3.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 436)
+  		.attr("y1", 34)
+  		.attr("x2", 440)
+  		.attr("y2", 27)
+  svg3.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 436)
+  		.attr("y1", 34)
+  		.attr("x2", 444)
+  		.attr("y2", 34)
+  svg3.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 444)
+  		.attr("y1", 34)
+  		.attr("x2", 440)
+  		.attr("y2", 27)
+  svg3.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 420)
+  		.attr("y1", -20)
+  		.attr("x2", 530)
+  		.attr("y2", -20)
+  svg3.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 420)
+  		.attr("y1", -20)
+  		.attr("x2", 420)
+  		.attr("y2", 50)
+  svg3.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 530)
+  		.attr("y1", 50)
+  		.attr("x2", 420)
+  		.attr("y2", 50)
+  svg3.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 530)
+  		.attr("y1", 50)
+  		.attr("x2", 530)
+  		.attr("y2", -20)
+
+	});
+
+</script>
+<h1>Sepal Length vs Sepal Width (Square Root Scale)</h1>
+<script>
+/*
+-----------------------------------
+PART C
+-----------------------------------
+*/
+	//Width and height
+	var w = 500;
+	var h = 500;
+
+	
+	//Create SVG element
+	var svg5 = d3.select("body")
+				.append("svg")
+					.attr("width", w+80)
+					.attr("height", h+50)
+				.append("g")
+					.attr("transform", "translate(40,25)");
+
+d3.tsv('iris.tsv', function(error, i) {
+		if (error) throw error;
+		i.forEach(function (j) {
+			j.sepalLength = +j.sepalLength;
+			j.sepalWidth = +j.sepalWidth;
+		})
+	var x = d3.scale.pow().exponent(.5)
+		.domain(d3.extent(i, function(d) { return d.sepalLength; }))
+    	.range([0, w]);
+
+	var y = d3.scale.pow().exponent(.5)
+		.domain(d3.extent(i, function(d) { return d.sepalWidth; }))
+    	.range([h, 0]);
+	var xAxis = d3.svg.axis().scale(x)
+    	.orient("bottom")
+
+	var yAxis = d3.svg.axis().scale(y)
+    		.orient("left")
+
+
+	svg5.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + h + ")")
+		.call(xAxis)
+		.append("text")
+		      .attr("x", w-110)
+		      .attr("y", -5)
+		      .text("Sepal Length (cm)");
+	svg5.append("g")
+		.attr("class", "y axis")
+		.call(yAxis)
+		.append("text")
+	      .attr("class", "label")
+	      .attr("transform", "rotate(-90)")
+	      .attr("x", -110)
+	      .attr("y", 15)
+	      .text("Sepal Width (cm)");
+
+
+
+
+setosa = []
+versicolor = []
+verginica = []
+i.forEach(function(d) {
+	if (d.species == "setosa") {
+		setosa.push(d)
+	} else {
+		if (d.species == "versicolor") {
+		versicolor.push(d);
+		} else {
+		verginica.push(d)
+		}
+	}
+})
+
+
+
+
+  svg5.selectAll("data")
+      .data(setosa)
+    .enter().append("circle")
+      .attr("r", 4)
+      .attr("cy", function(d) { return y(d.sepalWidth); })
+      .attr("cx", function(d) { return x(d.sepalLength); })
+      .style("fill", "red");
+
+  svg5.selectAll("data")
+      .data(versicolor)
+    .enter().append("rect")
+      .attr("height", 6)
+      .attr("width", 6)
+      .attr("y", function(d) { return y(d.sepalWidth); })
+      .attr("x", function(d) { return x(d.sepalLength); })
+      .style("fill", "blue")
+  
+  //triangle
+  svg5.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.sepalWidth) -2; })
+      .attr("x1", function(d) { return x(d.sepalLength) - 4; })
+      .attr("y2", function(d) { return y(d.sepalWidth) -2; })
+      .attr("x2", function(d) { return x(d.sepalLength) + 4; })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  svg5.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.sepalWidth) - 8; })
+      .attr("x1", function(d) { return x(d.sepalLength); })
+      .attr("y2", function(d) { return y(d.sepalWidth) -2; })
+      .attr("x2", function(d) { return x(d.sepalLength) + 4; })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  svg5.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.sepalWidth) -2; })
+      .attr("x1", function(d) { return x(d.sepalLength) - 4; })
+      .attr("y2", function(d) { return y(d.sepalWidth) -8; })
+      .attr("x2", function(d) { return x(d.sepalLength); })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  
+  //key
+  svg5.append("text")
+  		.attr("x", 450)
+  		.text("Setosa")
+  svg5.append("text")
+  	 	.attr("x", 450)
+  	 	.attr("y", 18)
+  	 	.text("Versicolor")
+  svg5.append("text")
+  	 	.attr("x", 450)
+  	 	.attr("y", 36)
+  	 	.text("Verginica")
+  svg5.append("circle")
+  		.attr("cx", 440)
+  		.attr("cy", -5)
+  		.attr("r", 4)
+  		.attr("fill", "red")
+  svg5.append("rect")
+  		.attr("x", 437)
+  		.attr("y", 10)
+  		.attr("width", 6)
+  		.attr("height", 6)
+  		.attr("fill", "blue")
+  svg5.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 436)
+  		.attr("y1", 34)
+  		.attr("x2", 440)
+  		.attr("y2", 27)
+  svg5.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 436)
+  		.attr("y1", 34)
+  		.attr("x2", 444)
+  		.attr("y2", 34)
+  svg5.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 444)
+  		.attr("y1", 34)
+  		.attr("x2", 440)
+  		.attr("y2", 27)
+  svg5.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 420)
+  		.attr("y1", -20)
+  		.attr("x2", 530)
+  		.attr("y2", -20)
+  svg5.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 420)
+  		.attr("y1", -20)
+  		.attr("x2", 420)
+  		.attr("y2", 50)
+  svg5.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 530)
+  		.attr("y1", 50)
+  		.attr("x2", 420)
+  		.attr("y2", 50)
+  svg5.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 530)
+  		.attr("y1", 50)
+  		.attr("x2", 530)
+  		.attr("y2", -20)
+
+	});
+
+</script>
+
+
+		</script>
+		<h1>Sepal Length vs Sepal Width (Log Scale)</h1>
+		<script>
+
+	//Width and height
+	var w = 500;
+	var h = 500;
+
+	
+	//Create SVG element
+	var svg7 = d3.select("body")
+				.append("svg")
+					.attr("width", w+80)
+					.attr("height", h+50)
+				.append("g")
+					.attr("transform", "translate(40,25)");
+
+d3.tsv('iris.tsv', function(i) {
+		i.forEach(function (j) {
+			j.sepalLength = +j.sepalLength;
+			j.sepalWidth = +j.sepalWidth;
+		})
+	var x = d3.scale.log()
+		.domain(d3.extent(i, function(d) { return d.sepalLength; }))
+    	.range([0, w]);
+
+	var y = d3.scale.log()
+		.domain(d3.extent(i, function(d) { return d.sepalWidth; }))
+    	.range([h, 0]);
+	var xAxis = d3.svg.axis().scale(x)
+    	.orient("bottom")
+
+	var yAxis = d3.svg.axis().scale(y)
+    		.orient("left")
+
+
+	svg7.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + h + ")")
+		.call(xAxis)
+		.append("text")
+		      .attr("x", w-110)
+		      .attr("y", -5)
+		      .text("Sepal Length (cm)");
+	svg7.append("g")
+		.attr("class", "y axis")
+		.call(yAxis)
+		.append("text")
+	      .attr("class", "label")
+	      .attr("transform", "rotate(-90)")
+	      .attr("x", -110)
+	      .attr("y", 15)
+	      .text("Sepal Width (cm)");
+
+
+
+
+setosa = []
+versicolor = []
+verginica = []
+i.forEach(function(d) {
+	if (d.species == "setosa") {
+		setosa.push(d)
+	} else {
+		if (d.species == "versicolor") {
+		versicolor.push(d);
+		} else {
+		verginica.push(d)
+		}
+	}
+})
+
+
+
+
+  svg7.selectAll("data")
+      .data(setosa)
+    .enter().append("circle")
+      .attr("r", 4)
+      .attr("cy", function(d) { return y(d.sepalWidth); })
+      .attr("cx", function(d) { return x(d.sepalLength); })
+      .style("fill", "red");
+
+  svg7.selectAll("data")
+      .data(versicolor)
+    .enter().append("rect")
+      .attr("height", 6)
+      .attr("width", 6)
+      .attr("y", function(d) { return y(d.sepalWidth); })
+      .attr("x", function(d) { return x(d.sepalLength); })
+      .style("fill", "blue")
+  
+  //triangle
+  svg7.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.sepalWidth) -2; })
+      .attr("x1", function(d) { return x(d.sepalLength) - 4; })
+      .attr("y2", function(d) { return y(d.sepalWidth) -2; })
+      .attr("x2", function(d) { return x(d.sepalLength) + 4; })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  svg7.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.sepalWidth) - 8; })
+      .attr("x1", function(d) { return x(d.sepalLength); })
+      .attr("y2", function(d) { return y(d.sepalWidth) -2; })
+      .attr("x2", function(d) { return x(d.sepalLength) + 4; })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  svg7.selectAll("data")
+      .data(verginica)
+    .enter().append("line")
+      .attr("y1", function(d) { return y(d.sepalWidth) -2; })
+      .attr("x1", function(d) { return x(d.sepalLength) - 4; })
+      .attr("y2", function(d) { return y(d.sepalWidth) -8; })
+      .attr("x2", function(d) { return x(d.sepalLength); })
+      .style("stroke", "green")
+      .attr("stroke-width", 2)
+  
+  //key
+  svg7.append("text")
+  		.attr("x", 450)
+  		.text("Setosa")
+  svg7.append("text")
+  	 	.attr("x", 450)
+  	 	.attr("y", 18)
+  	 	.text("Versicolor")
+  svg7.append("text")
+  	 	.attr("x", 450)
+  	 	.attr("y", 36)
+  	 	.text("Verginica")
+  svg7.append("circle")
+  		.attr("cx", 440)
+  		.attr("cy", -5)
+  		.attr("r", 4)
+  		.attr("fill", "red")
+  svg7.append("rect")
+  		.attr("x", 437)
+  		.attr("y", 10)
+  		.attr("width", 6)
+  		.attr("height", 6)
+  		.attr("fill", "blue")
+  svg7.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 436)
+  		.attr("y1", 34)
+  		.attr("x2", 440)
+  		.attr("y2", 27)
+  svg7.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 436)
+  		.attr("y1", 34)
+  		.attr("x2", 444)
+  		.attr("y2", 34)
+  svg7.append("line")
+  		.style("stroke", "green")
+  		.attr("stroke-width", 2)
+  		.attr("x1", 444)
+  		.attr("y1", 34)
+  		.attr("x2", 440)
+  		.attr("y2", 27)
+  svg7.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 420)
+  		.attr("y1", -20)
+  		.attr("x2", 530)
+  		.attr("y2", -20)
+  svg7.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 420)
+  		.attr("y1", -20)
+  		.attr("x2", 420)
+  		.attr("y2", 50)
+  svg7.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 530)
+  		.attr("y1", 50)
+  		.attr("x2", 420)
+  		.attr("y2", 50)
+  svg7.append("line")
+  		.style("stroke", "black")
+  		.attr("x1", 530)
+  		.attr("y1", 50)
+  		.attr("x2", 530)
+  		.attr("y2", -20)
+
+	});
+
+
+
+		</script>
+	</body>
+</html>
