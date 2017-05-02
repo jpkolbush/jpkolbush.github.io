@@ -196,6 +196,59 @@
 		})
 		console.log(div1)
 		console.log(div2)
+		records.sort(function (a,b) {
+			if (a[1] < b[1]) {
+				return true
+			} else if (a[1] > b[1]) {
+				return false
+			} else{
+				return (a[3] < b[3])
+			}
+		})
+		nRecords = []
+		if (div1[0][1] > div2[0][1] || 
+			(div1[0][1] == div2[0][1]) && div1[0][3] > div2[0][3]) {
+
+			div1[0][4] = 1
+			div1[0][5] = 1
+			div2[0][4] = 2
+			div2[0][5] = 1
+			nRecords.push(div1[0])
+			nRecords.push(div2[0])
+		}
+		else {
+			div1[0][4] = 2
+			div1[0][5] = 1
+			div2[0][4] = 1
+			div2[0][5] = 1
+			nRecords.push(div2[0])
+			nRecords.push(div1[0])
+		}
+
+		curr = 3
+		//merge div1 and div2 together
+		i1 = 1
+		i2 = 1
+		while (i1 < 6 && i2 < 6){
+			if (div1[i1][1] > div2[i2][1] || 
+			(div1[i1][1] == div2[i2][1]) && div1[i1][3] > div2[i2][3]) {
+				div1[i1][4] = curr
+				nRecords.push(div1[i1])
+				i1 = i1 + 1
+			}
+			else {
+				div1[i2] = curr
+				nRecords.push(div1[i2])
+				i2 = i2 + 1
+			}
+			curr = curr + 1
+		}
+		nRecords[2][5] = 1
+		nRecords[3][5] = 1
+
+		console.log(nRecords)
+
+
 
 
 	function Bambitron(n) {
