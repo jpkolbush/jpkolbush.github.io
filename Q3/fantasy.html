@@ -199,6 +199,10 @@
 		console.log(div1)
 		console.log(div2)
 		*/
+		while (i < 12) {
+			console.log(records[i])
+			i = i + 1
+		} 
 		console.log(records)
 		records.sort(function (a,b) {
 			if (a[1] < b[1]) {
@@ -210,10 +214,7 @@
 			}
 		})
 		i = 0
-		while (i < 12) {
-			console.log(records[i])
-			i = i + 1
-		} 
+
 		/*
 		nRecords = []
 		if (div1[0][1] > div2[0][1] || 
