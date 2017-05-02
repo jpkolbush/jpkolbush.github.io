@@ -96,7 +96,7 @@
 
 			var avg = tot/ (j-1)
 			console.log(avg)
-			
+			j = j - 1
 			while (j < 16) {
 				r = Math.random()
 				erf = 0
@@ -107,7 +107,7 @@
 					k = k + 1
 				}
 				
-				cScores[j][i] = erf * std * Math.sqrt(2) + avg
+				cScores[j][i] = Math.round(erf * std * Math.sqrt(2) + avg)
 				j = j + 1
 				
 			
