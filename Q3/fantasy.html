@@ -232,11 +232,13 @@
 		while (i1 < 6 && i2 < 6){
 			if (div1[i1][1] > div2[i2][1] || 
 			(div1[i1][1] == div2[i2][1]) && div1[i1][3] > div2[i2][3]) {
+				conosle.log(curr)
 				div1[i1][4] = curr
 				nRecords.push(div1[i1])
 				i1 = i1 + 1
 			}
 			else {
+				console.log(curr)
 				div1[i2][4] = curr
 				nRecords.push(div2[i2])
 				i2 = i2 + 1
