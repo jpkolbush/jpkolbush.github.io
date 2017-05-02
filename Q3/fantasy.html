@@ -92,7 +92,7 @@
 				tot = tot + curr
 				j = j + 1
 			}
-			i = i + 1
+			
 
 			var avg = tot/ (j-1)
 			console.log(avg)
@@ -101,17 +101,18 @@
 				r = Math.random()
 				erf = 0
 				k = 0
-				/*
+				
 				while (k < 40) {
 					erf = erf + c[k] * ((Math.sqrt(Math.PI)*(2*r -1)/2.0)**(2*k+1))/(2*k + 1)
 					k = k + 1
 				}
-				*/
+				
 				cScores[j][i] = erf * std * Math.sqrt(2) + avg
 				j = j + 1
 				
 			
 			}
+			i = i + 1
 			
 
 		}
