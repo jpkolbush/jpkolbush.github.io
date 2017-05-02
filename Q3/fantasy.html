@@ -230,7 +230,13 @@
 		i1 = 1
 		i2 = 1
 		while (i1 < 6 || i2 < 6){
-			if (div1[i1][1] > div2[i2][1] || 
+			if (i1 ==5) {
+				nRecords.push(div1[5])
+			}
+			else if (i2 == 5) {
+				nRecords.push(div2[5])
+			}
+			else if (div1[i1][1] > div2[i2][1] || 
 			(div1[i1][1] == div2[i2][1]) && div1[i1][3] > div2[i2][3]) {
 				console.log(curr)
 				div1[i1][4] = curr
@@ -246,12 +252,7 @@
 			curr = curr + 1
 		}
 		/*
-		if (i1 ==5) {
-			nRecords.push(div1[5])
-		}
-		if (i2 == 5) {
-			nRecords.push(div2[5])
-		}
+		
 		*/
 		nRecords[2][5] = 1
 		nRecords[3][5] = 1
