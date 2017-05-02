@@ -121,6 +121,7 @@
 	}
 	function generateRecord() {
 		s = genScores()
+		//row is a team, column is a week
 		mathups = [[5,2,6,4,3,11,10,8,7,12,9,11],
                 [6,1,4,3,5,8,7,12,9,11,10,8],
                 [4,6,5,2,1,10,8,7,12,9,11,10],
@@ -133,16 +134,46 @@
                 [12,7,9,8,11,3,1,5,4,6,2,3],
                 [9,8,7,12,10,1,5,4,6,2,3,1],
                 [10,9,8,11,7,4,6,2,3,1,4,6]]
-	}
-	records = []
-	// records header = ['Wins', 'Losses', "PF", "Seed", "Made Playoffs",
-	// "Champ", "Bottom 4", "Bolan"]
+		}
+		records = []
+		// records header = ['Wins', 'Losses', "PF", "Seed", "Made Playoffs",
+		// "Champ", "Bottom 4", "Bolan"]
 
-	i = 0 
-	while (i < 12) {
-		records.push([0,0,0,0,13,0,0,0,0,0])
-		i = i + 1
-	}
+		//each row is a team
+		i = 0 
+		while (i < 12) {
+			records.push([0,0,0,0,13,0,0,0,0,0])
+			i = i + 1
+		}
+		//i is team number
+		i = 0
+		while (i < 12) {
+			scoreTot = 0
+			// j is the week
+			j = 0
+			while (j < 12) {
+				Ascore = s[j][i]
+				Bscore = s[j][matchups[i][j]]
+				scoreTot = scoreTot + Ascore
+				if (Ascore > Bscore) {
+					records[i][0] = records[i][0] + 1
+				}
+				else if (Ascore < Bscore) {
+					records[i][1] = records[i][1] + 1
+				}
+				else {
+					records[i][0] = records[i][0] + 0.5
+					records[i][1] = records[i][1] + 0.5
+				}
+				j = j + 1
+
+			}
+			records[i][2] = scoreTot
+			i = i + 1
+		}
+		div1 = records.slice(0,6)
+		div2 = records.slice(6)
+		
 
 	function Bambitron(n) {
 		i = 0
