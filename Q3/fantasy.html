@@ -8,7 +8,7 @@
 }
 </style>
 <body>
-<h1>Glucose Level Frequency vs Time</h1>
+<h1>Current Scores</h1>
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script>
 	
@@ -55,20 +55,7 @@
 	w = 600
 	h = 600
 
-	var svg = d3.select("body").append("svg")
-	.attr("height", 100)
-	.attr("width", 100);
-
-	var table = d3.select("#table-location")
-	.append("table")
-	.attr("class", "table table-condensed table-striped"),
-	thead = table.append("thead"),
-	tbody = table.append("tbody");
-
-	var rows = tbody.selectAll("tr")
-		.data(cScores)
-		.enter()
-		.append("tr")
+	
 	
 
 
