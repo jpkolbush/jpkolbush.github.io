@@ -61,8 +61,10 @@
 			70081.16946751578,
 			89072.12295703808]
 	std = 20.77989
+	w = 600
+	h = 600
 	genScores()
-
+	Bambitron(100)
 	function genScores() {
 		//SWAPPING ROWS AND COLUMNS FROM THE R CODE!
 		cScores = [[111,98,81,83,61,105,68,149,86,97,94,100],
@@ -95,7 +97,7 @@
 			
 
 			var avg = tot/ (j-1)
-			console.log(avg)
+			//console.log(avg)
 			j = j - 1
 			while (j < 16) {
 				r = Math.random()
@@ -116,13 +118,20 @@
 			
 
 		}
-		console.log(cScores)
+		//console.log(cScores)
+	}
+	function Bambitron(n) {
+		i = 0
+		while (i < n) {
+			genScores()
+			i = i + 1
+		}
+		console.log("done")
 	}
 
 
 
-	w = 600
-	h = 600
+	
 
 	
 	
