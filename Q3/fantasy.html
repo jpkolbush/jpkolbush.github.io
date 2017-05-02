@@ -63,8 +63,8 @@
 	std = 20.77989
 	w = 600
 	h = 600
-	genScores()
-	Bambitron(40000)
+	generateRecord()
+	//Bambitron(40000)
 	function genScores() {
 		//SWAPPING ROWS AND COLUMNS FROM THE R CODE!
 		cScores = [[111,98,81,83,61,105,68,149,86,97,94,100],
@@ -136,13 +136,16 @@
                 [10,9,8,11,7,4,6,2,3,1,4,6]]
 		}
 		records = []
-		// records header = ['Wins', 'Losses', "PF", "Seed", "Made Playoffs",
+		// records header = ['Name', Wins', 'Losses', "PF", "Seed", "Made Playoffs",
 		// "Champ", "Bottom 4", "Bolan"]
 
+		teamNames = ["Team1", "Team2", "Team3", "Team4",
+					"Team5", "Team6", "Team7", "Team8",
+					"Team9", "Team10", "Team11", "Team12"]
 		//each row is a team
 		i = 0 
 		while (i < 12) {
-			records.push([0,0,0,0,13,0,0,0,0,0])
+			records.push([teamNames[i],0,0,0,0,13,0,0,0,0,0])
 			i = i + 1
 		}
 		//i is team number
@@ -156,23 +159,43 @@
 				Bscore = s[j][matchups[i][j]]
 				scoreTot = scoreTot + Ascore
 				if (Ascore > Bscore) {
-					records[i][0] = records[i][0] + 1
-				}
-				else if (Ascore < Bscore) {
 					records[i][1] = records[i][1] + 1
 				}
+				else if (Ascore < Bscore) {
+					records[i][2] = records[i][2] + 1
+				}
 				else {
-					records[i][0] = records[i][0] + 0.5
 					records[i][1] = records[i][1] + 0.5
+					records[i][2] = records[i][2] + 0.5
 				}
 				j = j + 1
 
 			}
-			records[i][2] = scoreTot
+			records[i][3] = scoreTot
 			i = i + 1
 		}
 		div1 = records.slice(0,6)
 		div2 = records.slice(6)
+		div1.sort(function (a,b) {
+			if (a[1] < b[1]) {
+				return true
+			} else if (a[1] > b[1]) {
+				return false
+			} else{
+				return (a[3] < b[3])
+			}
+		})
+		div2.sort(function (a,b) {
+			if (a[1] < b[1]) {
+				return true
+			} else if (a[1] > b[1]) {
+				return false
+			} else{
+				return (a[3] < b[3])
+			}
+		})
+		console.log(div1)
+		console.log(div2)
 
 
 	function Bambitron(n) {
