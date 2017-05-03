@@ -137,7 +137,7 @@
 		}
 		records = []
 		// records header = ['Name', Wins', 'Losses', "PF", "Seed", 
-		//"Made Playoffs","Champ", "Bottom 4", "Bolan", "Div"]
+		//"Made Playoffs","Champ", "Bottom 4", "Bolan", "Div", "Index"]
 		// 
 
 		teamNames = ["Team1", "Team2", "Team3", "Team4",
@@ -146,7 +146,7 @@
 		//each row is a team
 		i = 0 
 		while (i < 12) {
-			records.push([teamNames[i],0,0,0,13,0,0,0,0, Math.floor(i/6)])
+			records.push([teamNames[i],0,0,0,13,0,0,0,0, Math.floor(i/6), i])
 			i = i + 1
 		}
 		//i is team number
@@ -175,31 +175,7 @@
 			records[i][3] = scoreTot
 			i = i + 1
 		}
-		/*
-		div1 = records.slice(0,6)
-		div2 = records.slice(6)
-		div1.sort(function (a,b) {
-			if (a[1] < b[1]) {
-				return true
-			} else if (a[1] > b[1]) {
-				return false
-			} else{
-				return (a[3] < b[3])
-			}
-		})
-		div2.sort(function (a,b) {
-			if (a[1] < b[1]) {
-				return true
-			} else if (a[1] > b[1]) {
-				return false
-			} else{
-				return (a[3] < b[3])
-			}
-		})
-
-		console.log(div1)
-		console.log(div2)
-		*/
+		
 		 
 		console.log(records)
 		records.sort(function (a,b) {
@@ -228,67 +204,66 @@
 				if (curr < 5) {
 					records[i][5] = 1
 				}
+				if (curr > 7) {
+					records[i][7] = 1
+				}
 				curr = curr + 1
 			}
 			i = i + 1
-		}
-		console.log(records)
-		/*
-		nRecords = []
-		if (div1[0][1] > div2[0][1] || 
-			(div1[0][1] == div2[0][1]) && div1[0][3] > div2[0][3]) {
+		} 
 
-			div1[0][4] = 1
-			div1[0][5] = 1
-			div2[0][4] = 2
-			div2[0][5] = 1
-			nRecords.push(div1[0])
-			nRecords.push(div2[0])
+		console.log(records)
+		records.sort (function (a,b) {
+			return a[4] - b[4]   //and after 
+		})
+
+		if (s[12][records[0][10]] + s[13][records[0][10]] > 
+			s[12][records[3][10]] + s[13][records[3][10]]) {
+			w1 = 0
 		}
 		else {
-			div1[0][4] = 2
-			div1[0][5] = 1
-			div2[0][4] = 1
-			div2[0][5] = 1
-			nRecords.push(div2[0])
-			nRecords.push(div1[0])
+			w1 = 3
+		}
+		if (s[12][records[1][10]] + s[13][records[1][10]] > 
+			s[12][records[2][10]] + s[13][records[2][10]]) {
+			w2 = 1
+		}
+		else {
+			w2 = 2
+		}
+		if (s[12][records[11][10]] + s[13][records[11][10]] < 
+			s[12][records[8][10]] + s[13][records[8][10]]) {
+			l1 = 11
+		}
+		else {
+			l1 = 8
+		}
+		if (s[12][records[10][10]] + s[13][records[10][10]] < 
+			s[12][records[9][10]] + s[13][records[9][10]]) {
+			l2 = 10
+		}
+		else {
+			l2 = 9
 		}
 
-		curr = 3
-		//merge div1 and div2 together
-		i1 = 1
-		i2 = 1
-		while (curr < 12){
-			
-			if (div1[i1][1] > div2[i2][1] || 
-			(div1[i1][1] == div2[i2][1]) && div1[i1][3] > div2[i2][3]) {
-				console.log(curr)
-				div1[i1][4] = curr
-				nRecords.push(div1[i1])
-				i1 = i1 + 1
-			}
-			else {
-				console.log(curr)
-				div1[i2][4] = curr
-				nRecords.push(div2[i2])
-				i2 = i2 + 1
-			}
-			curr = curr + 1
+		if (s[14][records[w1][10]] + s[15][records[w1][10]] > 
+			s[14][records[w2][10]] + s[15][records[w2][10]]) {
+			champ = w1
 		}
-		
-		if (i1 ==5) {
-			nRecords.push(div1[5])
+		else {
+			champ = w2
 		}
-		else if (i2 == 5) {
-			nRecords.push(div2[5])
-		}
-		
-		nRecords[2][5] = 1
-		nRecords[3][5] = 1
-		console.log(nRecords)
-		*/
 
+		if (s[14][records[l1][10]] + s[15][records[l1][10]] < 
+			s[14][records[l2][10]] + s[15][records[l2][10]]) {
+			bolan = l1
+		}
+		else {
+			bolan = l2
+		}
 
+		records[champ][6] = 1
+		records[bolan][8] = 1
 
 
 	function Bambitron(n) {
