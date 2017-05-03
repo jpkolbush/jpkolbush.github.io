@@ -64,7 +64,9 @@
 	w = 600
 	h = 600
 	generateRecord()
-	//Bambitron(40000)
+	Bambitron(4000)
+
+
 	function genScores() {
 		//SWAPPING ROWS AND COLUMNS FROM THE R CODE!
 		cScores = [[111,98,81,83,61,105,68,149,86,97,94,100],
@@ -177,7 +179,6 @@
 		}
 		
 		 
-		console.log(records)
 		records.sort(function (a,b) {
 			if (a[1] < b[1]) {
 				return 1
@@ -265,13 +266,25 @@
 		records[champ][6] = 1
 		records[bolan][8] = 1
 
+		return records
 
 	function Bambitron(n) {
-		i = 0
-		while (i < n) {
-			generateRecord()
+		r = generateRecord()
+		i = 2
+		while (i <= n) {
+			r2 = generateRecord()
+			j = 0
+			while (j < 12) {
+				k = 0
+				while (k < 9) {
+					r[j][k] = (r[j][k]*(i-1) + r2[j][k])/i
+					k = k + 1
+				}
+				j = j + 1
+			}
 			i = i + 1
 		}
+		console.log(r)
 		console.log("done")
 	}
 
