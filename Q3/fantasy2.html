@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+}
+</style>
+<body>
+<h1>Bambitron 3.0</h1>
+<p1>Calculating. Please Wait.</p1>
+<script src="../lib/d3.v3.min.js"></script>
+<script>
+
+	teamNames = ["Team1", "Team2", "Team3", "Team4",
+					"Team5", "Team6", "Team7", "Team8",
+					"Team9", "Team10", "Team11", "Team12"]
+	matchupsS = [["Team1", 2,3,5,4,1,7,11,9,6,10,8,7],
+                ["Team2", 4,2,3,5,0,6,10,8,7,11,9,6],
+                ["Team3", 0,1,4,3,5,11,9,6,10,8,7,11],
+                ["Team4", 5,0,1,2,4,8,7,11,9,6,10,8],
+                ["Team5", 1,5,2,0,3,10,8,7,11,9,6,10],
+                ["Team6", 3,4,0,1,2,9,6,10,8,7,11,9],
+                ["Team7", 10,11,8,9,7,1,5,2,0,3,4,1],
+                ["Team8", 11,8,9,10,6,0,3,4,1,5,2,0],
+                ["Team9", 9,7,6,11,10,3,4,1,5,2,0,3],
+                ["Team10", 8,10,7,6,11,5,2,0,3,4,1,5],
+                ["Team11", 6,9,11,7,8,4,1,5,2,0,3,4],
+                ["Team12", 7,6,10,8,9,2,0,3,4,1,5,2]]
+	var columnsS = [
+			{ head: 'Name', cl: 'title',
+      			html: function(r) { return r[0]; } },
+      		{ head: 'Week1', cl: 'num',
+      			html: function(r) { return r[1]; } },
+      		{ head: 'Week2', cl: 'num',
+      			html: function(r) { return r[2]; } },
+      		{ head: 'Week3', cl: 'num',
+      			html: function(r) { return r[3]; } },
+      		{ head: 'Week4', cl: 'num',
+      			html: function(r) { return r[4]; } },
+      		{ head: 'Week5', cl: 'num',
+      			html: function(r) { return r[5]; } },
+      		{ head: 'Week6', cl: 'num',
+      			html: function(r) { return r[6]; } },
+      		{ head: 'Week7', cl: 'num',
+      			html: function(r) { return r[7]; } },
+      		{ head: 'Week8', cl: 'num',
+      			html: function(r) { return r[8]; } },
+      		{ head: 'Week9', cl: 'num',
+      			html: function(r) { return r[9]; } },
+      		{ head: 'Week10', cl: 'num',
+      			html: function(r) { return r[10]; } },
+      		{ head: 'Week11', cl: 'num',
+      			html: function(r) { return r[11]; } },
+      		{ head: 'Week12', cl: 'num',
+      			html: function(r) { return r[12]; } },
+
+		]
+	var sched = d3.select('body')
+        .append('table');
+
+    // create table header
+    sched.append('thead').append('tr')
+        .selectAll('th')
+        .data(columnsS).enter()
+        .append('th')
+        .attr('class', function(r) {return r.cl})
+        .text(function(r) {return r.head});
+
+    // create table body
+    sched.append('tbody')
+        .selectAll('tr')
+        .data(matchupsS).enter()
+        .append('tr')
+        .selectAll('td')
+        .data(function(row, i) {
+            return columnsS.map(function(c) {
+                // compute cell values for this specific row
+                var cell = {};
+                d3.keys(c).forEach(function(k) {
+                    cell[k] = typeof c[k] == 'function' ? c[k](row,i) : c[k];
+                });
+                return cell;
+            });
+        }).enter()
+        .append('td')
+        .html(function(r) {return r.html})
+        .attr('class', function(r) {return r.cl});
+
+    function length() {
+        var fmt = d3.format('02d');
+        return function(l) { return Math.floor(l / 60) + ':' + fmt(l % 60) + ''; };
+    }
+
+	c = [1, 1, 1.1666666666666667,
+			1.4111111111111112,
+			1.7337301587301588,
+			2.14858024691358,
+			2.6771662391106834,
+			3.3481463612812816,
+			4.198493963426833,
+			5.275422686461255,
+			6.638995094615459,
+			8.365504501912918,
+			10.551802021076062,
+			13.320808170226233,
+			16.828521535783903,
+			21.272925305378422,
+			26.905302783242664,
+			34.044612310259325,
+			43.09574865388233,
+			54.572742243500116,
+			69.12823263611968,
+			87.5909148253449,
+			111.01311743420455,
+			140.73125712451855,
+			178.4426576114869,
+			226.30316759389552,
+			287.0512145039826,
+			364.1654599384032,
+			462.0651665758136,
+			586.3648580165928,
+			744.1979956155378,
+			944.6283922815563,
+			1199.1731641812473,
+			1522.4674820915277,
+			1933.1095997060772,
+			2454.7350833215687,
+			3117.382452435591,
+			3959.229335160556,
+			5028.7997269694015,
+			6387.77026383145,
+			8114.538168223919,
+			10308.757717309176,
+			13097.108284167014,
+			16640.62848102773,
+			21144.041841829647,
+			26867.615103829852,
+			34142.23720537835,
+			43388.5941585717,
+			55141.55285636318,
+			70081.16946751578,
+			89072.12295703808]
+	std = 20.77989
+	w = 600
+	h = 600
+	Bambitron(40, [])
+
+
+
+	function genScores() {
+		//SWAPPING ROWS AND COLUMNS FROM THE R CODE!
+		cScores = [[111,98,81,83,61,105,68,149,86,97,94,100],
+			   [92,103,61,71,83,109,115,92,111,66,95,55],
+			   [76, 85, 117, 89, 112, 72, 75, 76, 82, 67, 113, 106],
+			   [88, 66, 121, 52, 85, 92, 72, 70, 124, 61, 126, 76],
+			   [51,70,108,75,130,128,74,80,50,81,90,80],
+			   [0,0,0,0,0,0,0,0,0,0,0,0],
+			   [0,0,0,0,0,0,0,0,0,0,0,0],
+			   [0,0,0,0,0,0,0,0,0,0,0,0],
+			   [0,0,0,0,0,0,0,0,0,0,0,0],
+			   [0,0,0,0,0,0,0,0,0,0,0,0],
+			   [0,0,0,0,0,0,0,0,0,0,0,0],
+			   [0,0,0,0,0,0,0,0,0,0,0,0],
+			   [0,0,0,0,0,0,0,0,0,0,0,0],
+			   [0,0,0,0,0,0,0,0,0,0,0,0],
+			   [0,0,0,0,0,0,0,0,0,0,0,0],
+			   [0,0,0,0,0,0,0,0,0,0,0,0]]
+
+		var i2 = 0
+		while (i2 < 12) {
+	 		var j2 = 0
+			var curr = 100
+			var tot = 0
+			while (curr != 0) {
+				curr = cScores[j2][i2]
+				tot = tot + curr
+				j2 = j2 + 1
+			}
+
+			var avg = tot/ (j2-1)
+			//console.log(avg)
+			j2 = j2 - 1
+			while (j2 < 16) {
+				r = Math.random()
+				erf = 0
+				k2 = 0
+				
+				while (k2 < 40) {
+					erf = erf + c[k2] * ((Math.sqrt(Math.PI)*(2*r -1)/2.0)**(2*k2+1))/(2*k2 + 1)
+					k2 = k2 + 1
+				}
+				
+				cScores[j2][i2] = Math.round(erf * std * Math.sqrt(2) + avg)
+				j2 = j2 + 1
+			}
+			i2 = i2 + 1
+			
+
+		}
+		return cScores
+	}
+	function generateRecord(params) {
+		s = genScores()
+		//row is a team, column is a week
+		matchups = [[2,3,5,4,1,7,11,9,6,10,8,7],
+                [4,2,3,5,0,6,10,8,7,11,9,6],
+                [0,1,4,3,5,11,9,6,10,8,7,11],
+                [5,0,1,2,4,8,7,11,9,6,10,8],
+                [1,5,2,0,3,10,8,7,11,9,6,10],
+                [3,4,0,1,2,9,6,10,8,7,11,9],
+                [10,11,8,9,7,1,5,2,0,3,4,1],
+                [11,8,9,10,6,0,3,4,1,5,2,0],
+                [9,7,6,11,10,3,4,1,5,2,0,3],
+                [8,10,7,6,11,5,2,0,3,4,1,5],
+                [6,9,11,7,8,4,1,5,2,0,3,4],
+                [7,6,10,8,9,2,0,3,4,1,5,2]]
+		
+		records = []
+		// records header = ['Name', Wins', 'Losses', "PF", "Seed", 
+		//"Made Playoffs","Champ", "Bottom 4", "Bolan", "Div", "Index"]
+		// 
+
+		teamNames = ["Team1", "Team2", "Team3", "Team4",
+					"Team5", "Team6", "Team7", "Team8",
+					"Team9", "Team10", "Team11", "Team12"]
+		//each row is a team
+		i = 0 
+		while (i < 12) {
+			records.push([teamNames[i],0,0,0,13,0,0,0,0, Math.floor(i/6), i])
+			i = i + 1
+		}
+		k = 0
+		if (params != null) {
+			while (k < params.length) {
+				p = params[k].split(",")
+				A = parseInt(p[0])
+				B = parseInt(p[1])
+				wk = parseInt(p[2])
+
+				Ascore = s[wk - 1][A]
+				Bscore = s[wk - 1][B]
+				if (Ascore < Bscore) {
+					return null
+				}
+				k = k + 1
+			}
+		}
+		
+		//i is team number
+		i = 0
+		while (i < 12) {
+			scoreTot = 0
+			// j is the week
+			j = 0
+			while (j < 12) {
+				Ascore = s[j][i]
+				Bscore = s[j][matchups[i][j]]
+				scoreTot = scoreTot + Ascore
+				if (Ascore > Bscore) {
+					records[i][1] = records[i][1] + 1
+				}
+				else if (Ascore < Bscore) {
+					records[i][2] = records[i][2] + 1
+				}
+				else {
+					records[i][1] = records[i][1] + 0.5
+					records[i][2] = records[i][2] + 0.5
+				}
+				j = j + 1
+
+			}
+			records[i][3] = scoreTot
+			i = i + 1
+		}
+		
+		 
+		records.sort(function (a,b) {
+			if (a[1] < b[1]) {
+				return 1
+			} else if (a[1] > b[1]) {
+				return -1
+			} else{
+				return (b[3] - a[3])
+			}
+		})
+		records[0][4] = 1
+		records[0][5] = 1
+		firstPlaceDiv = records[0][9]
+		i = 1
+		while (records[i][9] == firstPlaceDiv) {
+			i = i + 1
+		}
+		records[i][4] = 2
+		records[i][5] = 1
+		curr = 3
+		i = 1
+		while (curr <13 ) {
+			if (records[i][4] == 13) {
+				records[i][4] = curr
+				if (curr < 5) {
+					records[i][5] = 1
+				}
+				if (curr > 7) {
+					records[i][7] = 1
+				}
+				curr = curr + 1
+			}
+			i = i + 1
+		} 
+
+		records.sort (function (a,b) {
+			return a[4] - b[4]   //and after 
+		})
+
+		if (s[12][records[0][10]] + s[13][records[0][10]] > 
+			s[12][records[3][10]] + s[13][records[3][10]]) {
+			w1 = 0
+		}
+		else {
+			w1 = 3
+		}
+		if (s[12][records[1][10]] + s[13][records[1][10]] > 
+			s[12][records[2][10]] + s[13][records[2][10]]) {
+			w2 = 1
+		}
+		else {
+			w2 = 2
+		}
+		if (s[12][records[11][10]] + s[13][records[11][10]] < 
+			s[12][records[8][10]] + s[13][records[8][10]]) {
+			l1 = 11
+		}
+		else {
+			l1 = 8
+		}
+		if (s[12][records[10][10]] + s[13][records[10][10]] < 
+			s[12][records[9][10]] + s[13][records[9][10]]) {
+			l2 = 10
+		}
+		else {
+			l2 = 9
+		}
+
+		if (s[14][records[w1][10]] + s[15][records[w1][10]] > 
+			s[14][records[w2][10]] + s[15][records[w2][10]]) {
+			champ = w1
+		}
+		else {
+			champ = w2
+		}
+
+		if (s[14][records[l1][10]] + s[15][records[l1][10]] < 
+			s[14][records[l2][10]] + s[15][records[l2][10]]) {
+			bolan = l1
+		}
+		else {
+			bolan = l2
+		}
+
+		records[champ][6] = 1
+		records[bolan][8] = 1
+
+		records.sort (function (a,b) {
+			return a[10] - b[10]   //and after 
+		})
+		return records
+	}
+
+	function Bambitron(n, params) {
+		r1 = generateRecord(params)
+		var columns = [
+			{ head: 'Name', cl: 'title',
+      			html: function(r) { return r[0]; } },
+      		{ head: 'Inxex #', cl: 'title',
+      			html: function(r) { return r[10]; } },
+      		{ head: 'Wins', cl: 'num',
+      			html: function(r) { return Math.round(r[1]*100)/100; } },
+      		{ head: 'Losses', cl: 'num',
+      			html: function(r) { return Math.round(r[2]*100)/100; } },
+      		{ head: 'Points For', cl: 'num',
+      			html: function(r) { return Math.round(r[3]); } },
+      		{ head: 'Seed', cl: 'num',
+      			html: function(r) { return Math.round(r[4]*100)/100; } },
+      		{ head: 'Playoff %', cl: 'num',
+      			html: function(r) { return Math.round(r[5]*10000)/100; } },
+      		{ head: 'Champion %', cl: 'num',
+      			html: function(r) { return Math.round(r[6]*10000)/100; } },
+      		{ head: 'Bottom 4 %', cl: 'num',
+      			html: function(r) { return Math.round(r[7]*10000)/100; } },
+      		{ head: 'Bolan %', cl: 'num',
+      			html: function(r) { return Math.round(r[8]*10000)/100; } },
+		]
+		var table = d3.select('body')
+        .append('table');
+
+        
+    // create table header
+    table.append('thead').append('tr')
+        .selectAll('th')
+        .data(columns).enter()
+        .append('th')
+        .attr('class', function(r) {return r.cl})
+        .text(function(r) {return r.head});
+
+    // create table body
+    table.append('tbody')
+        .selectAll('tr')
+        .data(r1).enter()
+        .append('tr')
+        .selectAll('td')
+        .data(function(row, i) {
+            return columns.map(function(c) {
+                // compute cell values for this specific row
+                var cell = {};
+                d3.keys(c).forEach(function(k) {
+                    cell[k] = typeof c[k] == 'function' ? c[k](row,i) : c[k];
+                });
+                return cell;
+            });
+        }).enter()
+        .append('td')
+        .html(function(r) {return r.html})
+        .attr('class', function(r) {return r.cl});
+
+
+		hardCount = 1
+		while (hardCount < 50000000 && r1 == null) {
+			r1 = generateRecord(params)
+			hardCount = hardCount + 1
+		}
+		i3 = 1
+		while (i3 < n && hardCount < 50000000) {
+			d3.select("table").remove()
+			var table = d3.select('body')
+        .append('table');
+			// create table body
+
+		    table.append('tbody')
+		        .selectAll('tr')
+		        .data(r1).enter()
+		        .append('tr')
+		        .selectAll('td')
+		        .data(function(row, i) {
+		            return columns.map(function(c) {
+		                // compute cell values for this specific row
+		                var cell = {};
+		                d3.keys(c).forEach(function(k) {
+		                    cell[k] = typeof c[k] == 'function' ? c[k](row,i) : c[k];
+		                });
+		                return cell;
+		            });
+		        }).enter()
+		        .append('td')
+		        .html(function(r) {return r.html})
+		        .attr('class', function(r) {return r.cl});
+			r2 = generateRecord(params)
+			if (r2 != null) {
+				j3 = 0
+				while (j3 < 12) {
+					k3 = 1
+					while (k3 < 9) {
+
+						r1[j3][k3] = (r1[j3][k3]*(i3-1) + r2[j3][k3])/i3
+						k3 = k3 + 1
+					}
+					j3 = j3 + 1
+				}
+				i3 = i3 + 1
+			}
+		hardCount = hardCount + 1
+			
+		}
+		console.log(i3)
+		console.log(hardCount)
+		r1.sort (function (a,b) {
+			return a[4] - b[4]   //and after 
+		})
+		// records header = ['Name', Wins', 'Losses', "PF", "Seed", 
+		//"Made Playoffs","Champ", "Bottom 4", "Bolan", "Div", "Index"]
+		// 
+		
+
+
+		// create table
+
+    
+
+    function length() {
+        var fmt = d3.format('02d');
+        return function(l) { return Math.floor(l / 60) + ':' + fmt(l % 60) + ''; };
+    }
+		console.log(r1)
+		console.log("done")
+	}
+
+	function confirmInput() {
+		var txtinput = document.getElementById('txtinput').value;
+		console.log(txtinput)
+		txtinput = String(txtinput)
+		console.log(txtinput)
+		txtinput = txtinput.split(";")
+		console.log(txtinput)
+		Bambitron(40000, txtinput)
+	}
+</script>
+<p>
+</p>
+<body>
+	<input type ="text" id= "txtinput">
+	<input type = "button" value="Go" onclick="confirmInput()">
+</body>

@@ -8,7 +8,9 @@
 }
 </style>
 <body>
-<h1>Current Scores</h1>
+<h1>Bambitron 3.0</h1>
+<h2>Current Standings</h2>
+<p1>Calculating. Please Wait.</p1>
 <script src="../lib/d3.v3.min.js"></script>
 <script>
 	c = [1, 1, 1.1666666666666667,
@@ -63,9 +65,113 @@
 	std = 20.77989
 	w = 600
 	h = 600
-	generateRecord()
-	Bambitron(4000)
+	
+	sup = Bambitron(50000)
+	rec = sup[0]
+	masterList = sup[1]
+	document.write("<h2/>Create your own projection</h2>")
+	document.write("<h3/>Weekly Schedule</h3>")
 
+
+	writeTable2(rec)
+
+	document.write("<br>Use the text field below to specify the scenario you want to simulate. <br>")
+	document.write("Each scenario should be of the form '[Winning Team #], [Week #]' <br>")
+	document.write("Each scenario should be seperated by semicolans.<br>")
+	document.write("Example: If you want to Simulate the scenario that team 0 wins in week 9 <br> and that team 0 wins in week 11 you would enter <br> '0, 9; 0, 11' into the text box")
+	
+	function writeTable2(r1) {
+	teamNames = ["Team1", "Team2", "Team3", "Team4",
+					"Team5", "Team6", "Team7", "Team8",
+					"Team9", "Team10", "Team11", "Team12"]
+	matchupsS = [[0, 2,3,5,4,1,7,11,9,6,10,8,7,r1[0][11]],
+                [1, 4,2,3,5,0,6,10,8,7,11,9,6,r1[1][11]],
+                [2, 0,1,4,3,5,11,9,6,10,8,7,11,r1[2][11]],
+                [3, 5,0,1,2,4,8,7,11,9,6,10,8,r1[3][11]],
+                [4, 1,5,2,0,3,10,8,7,11,9,6,10,r1[4][11]],
+                [5, 3,4,0,1,2,9,6,10,8,7,11,9,r1[5][11]],
+                [6, 10,11,8,9,7,1,5,2,0,3,4,1,r1[6][11]],
+                [7, 11,8,9,10,6,0,3,4,1,5,2,0,r1[7][11]],
+                [8, 9,7,6,11,10,3,4,1,5,2,0,3,r1[8][11]],
+                [9, 8,10,7,6,11,5,2,0,3,4,1,5,r1[9][11]],
+                [10, 6,9,11,7,8,4,1,5,2,0,3,4,r1[10][11]],
+                [11, 7,6,10,8,9,2,0,3,4,1,5,2,r1[11][11]]]
+	var columnsS = [
+			{ head: 'Team #', cl: 'title',
+      			html: function(r) { return r[0]; } },
+      		{ head: 'Wk1', cl: 'num',
+      			html: function(r) { return (String(r[1]) + " : " + 
+      				String(Math.round(r[13][0]*100)) + "   "); } },
+      		{ head: 'Wk2', cl: 'num',
+      			html: function(r) { return (String(r[2]) + " : " + 
+      				String(Math.round(r[13][1]*100)) + "   "); } },
+      		{ head: 'Wk3', cl: 'num',
+      			html: function(r) { return (String(r[3]) + " : " + 
+      				String(Math.round(r[13][2]*100)) + "   "); } },
+      		{ head: 'Wk4', cl: 'num',
+      			html: function(r) { return (String(r[4]) + " : " + 
+      				String(Math.round(r[13][3]*100)) + "   "); } },
+      		{ head: 'Wk5', cl: 'num',
+      			html: function(r) { return (String(r[5]) + " : " + 
+      				String(Math.round(r[13][4]*100)) + "   "); } },
+      		{ head: 'Wk6', cl: 'num',
+      			html: function(r) { return (String(r[6]) + " : " + 
+      				String(Math.round(r[13][5]*100)) + "   "); } },
+      		{ head: 'Wk7', cl: 'num',
+      			html: function(r) { return (String(r[7]) + " : " + 
+      				String(Math.round(r[13][6]*100)) + "   "); } },
+      		{ head: 'Wk8', cl: 'num',
+      			html: function(r) { return (String(r[8]) + " : " + 
+      				String(Math.round(r[13][7]*100)) + "   "); } },
+      		{ head: 'Wk9', cl: 'num',
+      			html: function(r) { return (String(r[9]) + " : " + 
+      				String(Math.round(r[13][8]*100)) + "   "); } },
+      		{ head: 'Wk10', cl: 'num',
+      			html: function(r) { return (String(r[10]) + " : " + 
+      				String(Math.round(r[13][9]*100)) + "   "); } },
+      		{ head: 'Wk11', cl: 'num',
+      			html: function(r) { return (String(r[11]) + " : " + 
+      				String(Math.round(r[13][10]*100)) + "   "); } },
+      		{ head: 'Wk12', cl: 'num',
+      			html: function(r) { return (String(r[12]) + " : " + 
+      				String(Math.round(r[13][11]*100)) + "   "); } },
+		]
+	var sched = d3.select('body')
+        .append('table');
+
+    // create table header
+    sched.append('thead').append('tr')
+        .selectAll('th')
+        .data(columnsS).enter()
+        .append('th')
+        .attr('class', function(r) {return r.cl})
+        .text(function(r) {return r.head});
+
+    // create table body
+    sched.append('tbody')
+        .selectAll('tr')
+        .data(matchupsS).enter()
+        .append('tr')
+        .selectAll('td')
+        .data(function(row, i) {
+            return columnsS.map(function(c) {
+                // compute cell values for this specific row
+                var cell = {};
+                d3.keys(c).forEach(function(k) {
+                    cell[k] = typeof c[k] == 'function' ? c[k](row,i) : c[k];
+                });
+                return cell;
+            });
+        }).enter()
+        .append('td')
+        .html(function(r) {return r.html})
+        .attr('class', function(r) {return r.cl});
+    }
+    function length() {
+        var fmt = d3.format('02d');
+        return function(l) { return Math.floor(l / 60) + ':' + fmt(l % 60) + ''; };
+    }
+    
 
 	function genScores() {
 		//SWAPPING ROWS AND COLUMNS FROM THE R CODE!
@@ -86,42 +192,41 @@
 			   [0,0,0,0,0,0,0,0,0,0,0,0],
 			   [0,0,0,0,0,0,0,0,0,0,0,0]]
 
-		var i = 0
-		while (i < 12) {
-	 		var j = 0
+		var i2 = 0
+		while (i2 < 12) {
+	 		var j2 = 0
 			var curr = 100
 			var tot = 0
 			while (curr != 0) {
-				curr = cScores[j][i]
+				curr = cScores[j2][i2]
 				tot = tot + curr
-				j = j + 1
+				j2 = j2 + 1
 			}
-
-			var avg = tot/ (j-1)
+			n2 = j2 + 0.0
+			var avg = tot/ (j2-1)
 			//console.log(avg)
-			j = j - 1
-			while (j < 16) {
+			j2 = j2 - 1
+			while (j2 < 16) {
 				r = Math.random()
 				erf = 0
-				k = 0
+				k2 = 0
 				
-				while (k < 40) {
-					erf = erf + c[k] * ((Math.sqrt(Math.PI)*(2*r -1)/2.0)**(2*k+1))/(2*k + 1)
-					k = k + 1
+				while (k2 < 40) {
+					erf = erf + c[k2] * ((Math.sqrt(Math.PI)*(2*r -1)/2.0)**(2*k2+1))/(2*k2 + 1)
+					k2 = k2 + 1
 				}
 				
-				cScores[j][i] = Math.round(erf * std * Math.sqrt(2) + avg)
-				j = j + 1
-				
-			
+				cScores[j2][i2] = Math.round(erf * (std + std/n2) * Math.sqrt(2) + avg)
+				j2 = j2 + 1
 			}
-			i = i + 1
+			i2 = i2 + 1
 			
 
 		}
 		return cScores
 	}
 	function generateRecord() {
+		
 		s = genScores()
 		//row is a team, column is a week
 		matchups = [[2,3,5,4,1,7,11,9,6,10,8,7],
@@ -139,7 +244,7 @@
 		
 		records = []
 		// records header = ['Name', Wins', 'Losses', "PF", "Seed", 
-		//"Made Playoffs","Champ", "Bottom 4", "Bolan", "Div", "Index"]
+		//"Made Playoffs","Champ", "Bottom 4", "Bolan", "Div", "Index", [Game results]]
 		// 
 
 		teamNames = ["Team1", "Team2", "Team3", "Team4",
@@ -148,9 +253,27 @@
 		//each row is a team
 		i = 0 
 		while (i < 12) {
-			records.push([teamNames[i],0,0,0,13,0,0,0,0, Math.floor(i/6), i])
+			records.push([teamNames[i],0,0,0,13,0,0,0,0, Math.floor(i/6), i,[0,0,0,0,0,0,0,0,0,0,0,0]])
 			i = i + 1
 		}
+		k = 0
+		/*
+		if (params != null) {
+			while (k < params.length) {
+				p = params[k].split(",")
+				A = parseInt(p[0])
+				B = parseInt(p[1])
+				wk = parseInt(p[2])
+
+				Ascore = s[wk - 1][A]
+				Bscore = s[wk - 1][B]
+				if (Ascore < Bscore) {
+					return null
+				}
+				k = k + 1
+			}
+		}
+		*/
 		//i is team number
 		i = 0
 		while (i < 12) {
@@ -163,6 +286,7 @@
 				scoreTot = scoreTot + Ascore
 				if (Ascore > Bscore) {
 					records[i][1] = records[i][1] + 1
+					records[i][11][j] = 1
 				}
 				else if (Ascore < Bscore) {
 					records[i][2] = records[i][2] + 1
@@ -205,7 +329,7 @@
 				if (curr < 5) {
 					records[i][5] = 1
 				}
-				if (curr > 7) {
+				if (curr > 8) {
 					records[i][7] = 1
 				}
 				curr = curr + 1
@@ -213,7 +337,6 @@
 			i = i + 1
 		} 
 
-		console.log(records)
 		records.sort (function (a,b) {
 			return a[4] - b[4]   //and after 
 		})
@@ -266,35 +389,261 @@
 		records[champ][6] = 1
 		records[bolan][8] = 1
 
+		records.sort (function (a,b) {
+			return a[10] - b[10]   //and after 
+		})
 		return records
 	}
 
 	function Bambitron(n) {
-		r = generateRecord()
-		i = 2
-		while (i <= n) {
+		masterList = []
+		//if (params.length > 0) {
+		//	document.write("<h3>Your projection</h3>")
+		//}
+		r1 = generateRecord()
+		console.log(r1)
+		masterList.push(r1)
+		console.log("here1")
+		//writeTable(r1)
+		/*
+		i3 = 1
+		while (i3 < n) {
+			//d3.select("table").remove()
+			//writeTable(r1)
 			r2 = generateRecord()
-			j = 0
-			while (j < 12) {
-				k = 0
-				while (k < 9) {
-					r[j][k] = (r[j][k]*(i-1) + r2[j][k])/i
-					k = k + 1
+			console.log(r2)
+			masterList.push(r2)
+			j3 = 0
+			while (j3 < 12) {
+				k3 = 1
+				while (k3 < 9) {
+					r1[j3][k3] = (r1[j3][k3]*(i3-1) + r2[j3][k3])/i3
+					k3 = k3 + 1
 				}
-				j = j + 1
+				l3 = 0
+				while (l3 < 12) {
+					r1[j3][11][l3] = (r1[j3][11][l3]*(i3-1) + r2[j3][11][l3])/i3
+					l3 = l3 + 1
+				}
+				j3 = j3 + 1
 			}
-			i = i + 1
+			i3 = i3 + 1
 		}
-		console.log(r)
-		console.log("done")
+		*/
+		i3 = 1
+		while (i3 < n) {
+			r2 = generateRecord()
+			masterList.push(r2)
+			i3 = i3 + 1
+		}
+		rec = []
+		i3 = 0 
+		while (i3 < 12) {
+			rec.push([teamNames[i3],0,0,0,13,0,0,0,0, Math.floor(i3/6), i3,[0,0,0,0,0,0,0,0,0,0,0,0]])
+			i3 = i3+ 1
+		}
+	
+		//j3 is team #
+		j3 = 0
+		while (j3 < 12) {
+			//k3 is data entry
+			k3 = 1
+			while (k3 < 9) {
+				//i3 is simulation index
+				tot = 0
+				i3 = 0
+				while (i3 < masterList.length) {
+					tot = tot + masterList[i3][j3][k3]
+					i3 = i3 + 1
+				}
+				rec[j3][k3] = tot/(n + 0.0)
+				k3 = k3 + 1
+			}
+			k3 = 0
+			while (k3 < 12) {
+				tot = 0
+				i3 = 0
+				while (i3 < masterList.length) {
+					tot = tot + masterList[i3][j3][11][k3]
+					i3 = i3 + 1
+				}
+				rec[j3][11][k3] = tot/(n + 0.0)
+				k3 = k3 + 1
+			}
+			j3= j3 + 1
+		}
+
+		console.log(rec)
+		writeTable(rec)
+		rec.sort (function (a,b) {
+			return a[10] - b[10]   //and after 
+		})
+		console.log(rec)
+		return [rec, masterList]
+		
 	}
 
+	function writeTable(rec) {
+
+		rec.sort (function (a,b) {
+			return a[4] - b[4]   //and after 
+		})
+		// records header = ['Name', Wins', 'Losses', "PF", "Seed", 
+		//"Made Playoffs","Champ", "Bottom 4", "Bolan", "Div", "Index"]
+		// 
+		var columns = [
+			{ head: 'Name', cl: 'title',
+      			html: function(r) { return r[0]; } },
+      		{ head: 'Team #', cl: 'title',
+      			html: function(r) { return r[10]; } },
+      		{ head: 'Wins', cl: 'num',
+      			html: function(r) { return Math.round(r[1]*100)/100; } },
+      		{ head: 'Losses', cl: 'num',
+      			html: function(r) { return Math.round(r[2]*100)/100; } },
+      		{ head: 'Points For', cl: 'num',
+      			html: function(r) { return Math.round(r[3]); } },
+      		{ head: 'Seed', cl: 'num',
+      			html: function(r) { return Math.round(r[4]*100)/100; } },
+      		{ head: 'Playoff %', cl: 'num',
+      			html: function(r) { return Math.round(r[5]*10000)/100; } },
+      		{ head: 'Champion %', cl: 'num',
+      			html: function(r) { return Math.round(r[6]*10000)/100; } },
+      		{ head: 'Bottom 4 %', cl: 'num',
+      			html: function(r) { return Math.round(r[7]*10000)/100; } },
+      		{ head: 'Bolan %', cl: 'num',
+      			html: function(r) { return Math.round(r[8]*10000)/100; } },
+		]
 
 
+		// create table
+    var table = d3.select('body')
+        .append('table');
+
+    // create table header
+    table.append('thead').append('tr')
+        .selectAll('th')
+        .data(columns).enter()
+        .append('th')
+        .attr('class', function(r) {return r.cl})
+        .text(function(r) {return r.head});
+
+    // create table body
+    table.append('tbody')
+        .selectAll('tr')
+        .data(rec).enter()
+        .append('tr')
+        .selectAll('td')
+        .data(function(row, i) {
+            return columns.map(function(c) {
+                // compute cell values for this specific row
+                var cell = {};
+                d3.keys(c).forEach(function(k) {
+                    cell[k] = typeof c[k] == 'function' ? c[k](row,i) : c[k];
+                });
+                return cell;
+            });
+        }).enter()
+        .append('td')
+        .html(function(r) {return r.html})
+        .attr('class', function(r) {return r.cl});
+
+    function length() {
+        var fmt = d3.format('02d');
+        return function(l) { return Math.floor(l / 60) + ':' + fmt(l % 60) + ''; };
+    }
 	
+	}
+	function filter(txtinput, masterList) {
+		n = 50000
+		console.log(txtinput)
+		console.log(masterList)
 
+		bools = []
+		m3 =0
+		while (m3 < txtinput.length) {
+			p = txtinput[m3].split(",")
+			bools.push( [parseInt(p[0]), parseInt(p[1]) - 1])
+			m3 = m3 + 1
+		}
+		console.log(bools)
+		masterList2 = []
+		i3 = 0
+		while (i3 < masterList.length) {
+			b = true
+			m3 = 0
+			while (m3 < bools.length && b == true) {
+				t = bools[m3][0]
+				wk = bools[m3][1]
+				
+				b = (masterList[i3][t][11][wk] == 1)
+				
+				m3 = m3 + 1
+			} 
+			
+			if (b) {
+				masterList2.push(masterList[i3])
+			}
+			i3 = i3 + 1
+		}
+		
+		console.log(masterList2.length)
+		rec2 = []
+		i3 =0
+		while (i3 < 12) {
+			rec2.push([teamNames[i3],0,0,0,13,0,0,0,0, Math.floor(i3/6), i3,[0,0,0,0,0,0,0,0,0,0,0,0]])
+			i3 = i3+ 1
+		}
 	
-	
+		//j3 is team #
+		j3 = 0
+		while (j3 < 12) {
+			//k3 is data entry
+			k3 = 1
+			while (k3 < 9) {
+				//i3 is simulation index
+				tot = 0
+				i3 = 0
+				while (i3 < masterList2.length) {
 
+					tot = tot + masterList2[i3][j3][k3]
+					i3 = i3 + 1
+				}
+				rec2[j3][k3] = tot/(masterList2.length + 0.0)
+				k3 = k3 + 1
+			}
+			k3 = 0
+			while (k3 < 12) {
+				tot = 0
+				i3 = 0
+				while (i3 < masterList2.length) {
+					tot = tot + masterList2[i3][j3][11][k3]
+					i3 = i3 + 1
+				}
+				rec2[j3][11][k3] = tot/(masterList2.length + 0.0)
+				k3 = k3 + 1
+			}
+			j3= j3 + 1
+		}
+		if (masterList2.length == 0) {
 
+		}
+		writeTable(rec2)
+	}
+
+	function confirmInput() {
+		var txtinput = document.getElementById('txtinput').value;
+		console.log(txtinput)
+		txtinput = String(txtinput)
+		console.log(txtinput)
+		txtinput = txtinput.split(";")
+		console.log(txtinput)
+		filter(txtinput, masterList)
+	}
 </script>
+<p> 
+</p>
+<body>
+	<input type ="text" id= "txtinput">
+	<input type = "button" value="Go" onclick="confirmInput()">
+</body>
+<p> </p>
