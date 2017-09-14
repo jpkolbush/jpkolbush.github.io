@@ -176,7 +176,7 @@
 
 	function genScores() {
 		//SWAPPING ROWS AND COLUMNS FROM THE R CODE!
-		cScores = [[89.4,76.1,134,64.1,50,100.3,64.2,80,85.2,69.7,72,104.2],
+		var cScores = [[89.4,76.1,134,64.1,50,100.3,64.2,80,85.2,69.7,72,104.2],
 			   [0,0,0,0,0,0,0,0,0,0,0,0],
 			   [0,0,0,0,0,0,0,0,0,0,0,0],
 			   [0,0,0,0,0,0,0,0,0,0,0,0],
@@ -196,19 +196,22 @@
 		var i2 = 0
 		var tot = 0
 		var totCount = 0
-		while (i2 < 12) {
+		var curr = cScores[i2][0]
+		while (curr != 0) {
 	 		var j2 = 0
-			var curr = 100
-			while (curr != 0) {
-				curr = cScores[j2][i2]
+			while (j2 < 12) {
+				curr = cScores[i2][j2]
 				tot = tot + curr
 				j2 = j2 + 1
 				totCount = totCount + 1
 			}
 			i2 = i2 + 1
-		}
+			curr = cScores[i2][0]
 
+		}
+		//console.log(totCount)
 		var leageAvg = tot/ (totCount-1)
+		//console.log("Leage avg: " + leageAvg)
 
 		var i2 = 0
 
@@ -223,6 +226,7 @@
 			}
 			n2 = j2 - 1.0
 			var avg = tot/ (j2-1)
+			//console.log(i2 + ": " + avg)
 
 			var adjustedAvg = (avg + leageAvg/n2)/(1 + 1/n2)
 			//console.log(avg)
