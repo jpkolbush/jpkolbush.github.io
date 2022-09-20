@@ -4,208 +4,39 @@ import copy
 
 
 class T(Enum):
-    KOLBUSH = 1
+    STD_BUSH = 1
     JON = 2
     JOE = 3
     NICK = 4
     MATTY = 5
     MCCLURE = 6
-    LOGAN_DUC = 7
+    LOGAN = 7
     STEVE = 8
     JAMES = 9
     BRYCE = 10
     HUNYAR = 11
-    SCOTT = 12
+    DUC = 12
 
 
 def getConf(team):
-    if team in [T.KOLBUSH, T.JOE, T.MCCLURE, T.LOGAN_DUC, T.STEVE, T.BRYCE]:
+    if team in [T.DUC, T.JOE, T.MCCLURE, T.LOGAN, T.STEVE, T.BRYCE]:
         return 0
     else:
         return 1
 
-
 SCHEDULE = [
-    [
-        T.LOGAN_DUC,
-        T.STEVE,
-        T.JOE,
-        T.MCCLURE,
-        T.MATTY,
-        T.NICK,
-        T.SCOTT,
-        T.HUNYAR,
-        T.JAMES,
-        T.JON,
-        T.LOGAN_DUC,
-        T.JOE,
-        T.BRYCE,
-    ],
-    [
-        T.MATTY,
-        T.HUNYAR,
-        T.JAMES,
-        T.NICK,
-        T.JOE,
-        T.LOGAN_DUC,
-        T.STEVE,
-        T.BRYCE,
-        T.MCCLURE,
-        T.KOLBUSH,
-        T.MATTY,
-        T.JAMES,
-        T.SCOTT,
-    ],
-    [
-        T.BRYCE,
-        T.LOGAN_DUC,
-        T.KOLBUSH,
-        T.STEVE,
-        T.JON,
-        T.MATTY,
-        T.NICK,
-        T.SCOTT,
-        T.HUNYAR,
-        T.JAMES,
-        T.MCCLURE,
-        T.KOLBUSH,
-        T.LOGAN_DUC,
-    ],
-    [
-        T.HUNYAR,
-        T.SCOTT,
-        T.MATTY,
-        T.JON,
-        T.MCCLURE,
-        T.KOLBUSH,
-        T.JOE,
-        T.LOGAN_DUC,
-        T.STEVE,
-        T.BRYCE,
-        T.JAMES,
-        T.SCOTT,
-        T.HUNYAR,
-    ],
-    [
-        T.JON,
-        T.JAMES,
-        T.NICK,
-        T.SCOTT,
-        T.KOLBUSH,
-        T.JOE,
-        T.LOGAN_DUC,
-        T.STEVE,
-        T.BRYCE,
-        T.MCCLURE,
-        T.JON,
-        T.HUNYAR,
-        T.JAMES,
-    ],
-    [
-        T.STEVE,
-        T.BRYCE,
-        T.LOGAN_DUC,
-        T.KOLBUSH,
-        T.NICK,
-        T.SCOTT,
-        T.HUNYAR,
-        T.JAMES,
-        T.JON,
-        T.MATTY,
-        T.JOE,
-        T.BRYCE,
-        T.STEVE,
-    ],
-    [
-        T.KOLBUSH,
-        T.JOE,
-        T.MCCLURE,
-        T.BRYCE,
-        T.JAMES,
-        T.JON,
-        T.MATTY,
-        T.NICK,
-        T.SCOTT,
-        T.HUNYAR,
-        T.KOLBUSH,
-        T.STEVE,
-        T.JOE,
-    ],
-    [
-        T.MCCLURE,
-        T.KOLBUSH,
-        T.BRYCE,
-        T.JOE,
-        T.HUNYAR,
-        T.JAMES,
-        T.JON,
-        T.MATTY,
-        T.NICK,
-        T.SCOTT,
-        T.BRYCE,
-        T.LOGAN_DUC,
-        T.MCCLURE,
-    ],
-    [
-        T.SCOTT,
-        T.MATTY,
-        T.JON,
-        T.HUNYAR,
-        T.LOGAN_DUC,
-        T.STEVE,
-        T.BRYCE,
-        T.MCCLURE,
-        T.KOLBUSH,
-        T.JOE,
-        T.NICK,
-        T.JON,
-        T.MATTY,
-    ],
-    [
-        T.JOE,
-        T.MCCLURE,
-        T.STEVE,
-        T.LOGAN_DUC,
-        T.SCOTT,
-        T.HUNYAR,
-        T.JAMES,
-        T.JON,
-        T.MATTY,
-        T.NICK,
-        T.STEVE,
-        T.MCCLURE,
-        T.KOLBUSH,
-    ],
-    [
-        T.NICK,
-        T.JON,
-        T.SCOTT,
-        T.JAMES,
-        T.STEVE,
-        T.BRYCE,
-        T.MCCLURE,
-        T.KOLBUSH,
-        T.JOE,
-        T.LOGAN_DUC,
-        T.SCOTT,
-        T.MATTY,
-        T.NICK,
-    ],
-    [
-        T.JAMES,
-        T.NICK,
-        T.HUNYAR,
-        T.MATTY,
-        T.BRYCE,
-        T.MCCLURE,
-        T.KOLBUSH,
-        T.JOE,
-        T.LOGAN_DUC,
-        T.STEVE,
-        T.HUNYAR,
-        T.NICK,
-        T.JON,
-    ],
+    [T.MATTY, T.JON, T.HUNYAR, T.JAMES, T.NICK, T.DUC, T.STEVE, T.MCCLURE, T.BRYCE, T.LOGAN, T.JOE, T.HUNYAR, T.MATTY],
+    [T.NICK, T.STD_BUSH, T.JAMES, T.MATTY, T.HUNYAR, T.MCCLURE, T.BRYCE, T.LOGAN, T.JOE, T.DUC, T.STEVE, T.MATTY, T.JAMES],
+    [T.MCCLURE, T.LOGAN, T.STEVE, T.BRYCE, T.DUC, T.NICK, T.JAMES, T.HUNYAR, T.JON, T.MATTY, T.STD_BUSH, T.DUC, T.STEVE],
+    [T.JON, T.JAMES, T.MATTY, T.HUNYAR, T.STD_BUSH, T.JOE, T.DUC, T.STEVE, T.MCCLURE, T.BRYCE, T.LOGAN, T.JAMES, T.HUNYAR],
+    [T.STD_BUSH, T.HUNYAR, T.NICK, T.JON, T.JAMES, T.STEVE, T.MCCLURE, T.BRYCE, T.LOGAN, T.JOE, T.DUC, T.JON, T.STD_BUSH],
+    [T.JOE, T.DUC, T.LOGAN, T.STEVE, T.BRYCE, T.JON, T.MATTY, T.STD_BUSH, T.NICK, T.JAMES, T.HUNYAR, T.STEVE, T.BRYCE],
+    [T.BRYCE, T.JOE, T.MCCLURE, T.DUC, T.STEVE, T.JAMES, T.HUNYAR, T.JON, T.MATTY, T.STD_BUSH, T.NICK, T.BRYCE, T.DUC],
+    [T.DUC, T.BRYCE, T.JOE, T.MCCLURE, T.LOGAN, T.MATTY, T.STD_BUSH, T.NICK, T.JAMES, T.HUNYAR, T.JON, T.MCCLURE, T.JOE],
+    [T.HUNYAR, T.NICK, T.JON, T.STD_BUSH ,T.MATTY, T.LOGAN, T.JOE, T.DUC, T.STEVE, T.MCCLURE, T.BRYCE, T.NICK, T.JON],
+    [T.LOGAN, T.STEVE, T.DUC, T.JOE, T.MCCLURE, T.HUNYAR, T.JON, T.MATTY, T.STD_BUSH, T.NICK, T.JAMES, T.LOGAN, T.MCCLURE],
+    [T.JAMES, T.MATTY, T.STD_BUSH, T.NICK, T.JON, T.BRYCE, T.LOGAN, T.JOE, T.DUC, T.STEVE, T.MCCLURE, T.STD_BUSH, T.NICK],
+    [T.STEVE, T.MCCLURE, T.BRYCE, T.LOGAN, T.JOE, T.STD_BUSH, T.NICK, T.JAMES, T.HUNYAR, T.JON, T.MATTY, T.JOE, T.LOGAN]
 ]
 
 f = open("scores.csv", "r")
@@ -220,8 +51,8 @@ WEEKS_COMPLETE = len(SCORES[0])
 
 # std = 20.77989
 std = 23
-week1Weight = 0.1
-week2Weight = 0.381228202347
+week1Weight = 0.05
+week2Weight = 0.3
 weight = 0.465214410626
 
 
@@ -418,7 +249,7 @@ def testSchedule():
     i = 1
     for sched in SCHEDULE:
         if len(sched) != 13:
-            print("A schedule has wrong number of weeks")
+            print("A schedule {} has wrong number of weeks".format(i))
             return
         week = 0
         for opp in sched:
