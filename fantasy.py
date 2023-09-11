@@ -221,3 +221,4 @@ def testSchedule():
 
 
 Bambitron(50000)
+# testSchedule()
