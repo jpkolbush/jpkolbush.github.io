@@ -4,7 +4,7 @@ import copy
 from fantasy_core import *
 
 # std = 20.77989
-std = 23
+std = 25
 week1Weight = 0.05
 week2Weight = 0.3
 weight = 0.465214410626
@@ -21,6 +21,7 @@ def sortTeamEnum(teamRes):
 def sortSeedEnd(teamRes):
     return teamRes["Seed"]
 
+# WEEKS_COMPLETE = 2
 
 def generateSeason():
     scores = copy.deepcopy(SCORES)
@@ -61,9 +62,10 @@ def generateSeason():
             sim_avg = week2Weight * team_avgs[team_idx] + (1 - week2Weight) * league_avg
         else:
             sim_avg = weight * team_avgs[team_idx] + (1 - weight) * league_avg
-        scores[team_idx][WEEKS_COMPLETE:] = nr.normal(
+        gen_scores = nr.normal(
             sim_avg, std, (17 - WEEKS_COMPLETE)
         )
+        scores[team_idx][WEEKS_COMPLETE:] = gen_scores
         ret[team_idx]["PF"] = sum(scores[team_idx][:13])
 
     # Determine Record for regular season & two week tots for playoffs
@@ -222,3 +224,4 @@ def testSchedule():
 
 Bambitron(50000)
 # testSchedule()
+# generateSeason()
